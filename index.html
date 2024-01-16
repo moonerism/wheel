@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Колесо фильмов</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="box left">
+        <ul id="movieList">
+        </ul>
+        <div id="controls">
+          <input type="text" id="newMovie" placeholder="Название фильма" maxlength="25">
+          <select id="colorSelect">
+            <option value="null"> </option>
+            <option value="player-1"> </option>
+            <option value="player-2"> </option>
+          </select>
+          <button id="btnAddMovie">+</button>
+        </div>
+      </div>
+
+      <div id="wheelOfFortune">
+        <canvas id="wheel" width="500" height="500"></canvas>
+        <div id="spin">КРУТИТЬ</div>
+      </div>
+
+      <div class="box right">
+
+        <div class="leaderboard">
+          <div class="leaderboard-item">
+            <span class="player-1"> <span class="score-1"></span>  Артемий</span> <span class="leaderboard-emoji">🥇</span>
+          </div>
+          <div class="leaderboard-item">
+            <span class="player-2"> <span class="score-2"></span>  Слава</span> <span class="leaderboard-emoji">🥈</span>
+          </div>
+          </div>
+          <div class="player-info">
+        </div>
+
+        <div class="slider-container">
+          <input type="range" min="10" max="50" step="1" class="slider">
+          <span class="slider-text">Длительность: <span id="sliderValue">10</span> с.</span>
+        </div>
+      </div>
+      
+
+    <script defer src="src/index.js"></script>
+  </body>
+</html>

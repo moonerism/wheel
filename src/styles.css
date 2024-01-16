@@ -1,0 +1,307 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+li {
+  margin-bottom: 10px; /* Add margin to increase spacing between items */
+  user-select: none;
+}
+
+li:first-child {
+  margin-top: 5px; /* Add margin to increase spacing between first item and header */
+}
+
+body {
+  height: 100vh;
+  display: grid;
+  background-color: #222;
+  font-family: 'Source Sans Pro', sans-serif;
+  place-items: center;
+  background-image: url('https://www.transparenttextures.com/patterns/classy-fabric.png'); 
+  background-repeat: repeat; 
+}
+
+.box {
+  display: inline-block;
+  width: 500px;
+  height: 400px;
+  margin: 50px 50px;
+  padding: 15px;
+  background-color: transparent;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border: 1px solid black;
+  color: white;
+  z-index: 2;
+}
+
+.box.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.box.left h2 {
+  margin-top: 0;
+}
+
+.box.left ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  align-items: flex-start;
+  flex-grow: 1;
+}
+
+.box.right {
+  position: relative;
+}
+
+.box.right .slider-container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 15px; 
+  margin-bottom: 35px;
+}
+
+#controls > * {
+  margin-right: 5px;
+}
+
+#container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+
+#wheelOfFortune {
+  display: inline-block;
+  position: absolute;
+  overflow: hidden;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+}
+
+#wheel {
+  display: block;
+  width: 500px;
+  height: 500px;
+}
+
+#spin {
+  font: 1.5em/0 sans-serif;
+  user-select: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30%;
+  height: 30%;
+  margin: -15%;
+  background: #222;
+  color: #fff;
+  box-shadow: 0 0 0 8px #222, 0 0px 15px 5px rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  transition: 0.8s;
+}
+
+#spin::after {
+  content: '';
+  position: absolute;
+  top: -17px;
+  border: 10px solid transparent;
+  border-bottom-color: currentColor;
+  border-top: none;
+}
+
+button#btnAddMovie {
+  background-color: #222;
+  border: 1px solid #000;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  height: 40px; 
+  width: 40px;
+  color: grey; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+button#btnAddMovie:hover:not([disabled]) {
+  background-color: #000;
+  color: #fff;
+}
+
+button#btnAddMovie:disabled {
+  cursor: not-allowed;
+}
+
+#colorSelect {
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 10px;
+  color: grey;
+  background-color: #222;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  height: 40px;
+  transition: all 0.5s ease;
+}
+
+#colorSelect:disabled {
+  cursor: not-allowed;
+}
+
+input#newMovie {
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 10px;
+  color: #fff;
+  background-color: #222;
+  transition: all 0.5s ease;
+  height: 40px;
+  width: 180px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+input#newMovie:focus {
+  outline: none;
+  border-color: #f82;
+  box-shadow: 0 0 5px #f82;
+}
+
+input#newMovie:disabled {
+  cursor: not-allowed;
+}
+
+input[type="range"] {
+  appearance: none;
+  width: 160px;
+  height: 15px;
+  background-color: #222;
+  border-radius: 5px;
+  outline: 1px solid #000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background-color: grey;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background-color: grey;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type="range"][disabled]::-webkit-slider-thumb {
+  cursor: not-allowed;
+}
+
+input[type="range"][disabled]::-moz-range-thumb {
+  cursor: not-allowed;
+}
+
+.slider-text {
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  font-size: 12px;
+  color: grey;
+  width: 100%;
+  text-align: center;
+  user-select: none;
+}
+
+.leaderboard {
+  position: absolute;
+  right: 0;
+  top: 0;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+  margin-right: 15px;
+  user-select: none;
+  width: fit-content;
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.leaderboard-item .player-1 {
+  color: cornflowerblue;
+}
+
+.leaderboard-item .player-2 {
+  color: teal;
+}
+
+.player-info {
+  position: absolute;
+  top: 150px;
+  right: 15px;
+  display: none;
+  padding: 10px;
+  background-color: transparent;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border: 1px solid black;
+}
+
+buttonDelete {
+  background-color: #222;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 3px 5px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  color: grey; 
+  margin-left: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.first-place {
+  text-shadow: 0 2px 7px #ffd700;
+  background-image: url('assets/leader_bg.gif');
+  background-size: contain;
+}
+
+.loser {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.winner {
+  text-shadow: 0 2px 7px #ffd700; 
+  background-image: url('assets/win_anim.gif');
+  background-repeat: repeat;
+  background-size: contain;
+  background-position: center;
+  display: inline-block;
+}
