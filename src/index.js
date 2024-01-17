@@ -237,7 +237,7 @@ player2Item.addEventListener('click', function() {
   playerInfo.appendChild(closeButton); 
 });
 
-fetch('players.json')
+fetch('assets/players.json')
 .then(response => response.json())
 .then(data => {
   // Use the fetched JSON data in your code
