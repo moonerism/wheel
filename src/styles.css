@@ -260,10 +260,16 @@ input[type="range"][disabled]::-moz-range-thumb {
   color: teal;
 }
 
+.leaderboard-item .score-1, .score-2{
+  color: grey;
+}
+
 .player-info {
   position: absolute;
-  top: 150px;
+  top: 110px;
   right: 15px;
+  width: 250px;
+  height: 150px;
   display: none;
   padding: 10px;
   background-color: transparent;
@@ -273,6 +279,9 @@ input[type="range"][disabled]::-moz-range-thumb {
 }
 
 buttonDelete {
+  position: absolute;
+  right: 5px;
+  top: 5px;
   background-color: #222;
   color: #000;
   border: 1px solid #000;

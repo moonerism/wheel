@@ -178,19 +178,14 @@ addMovieBtn.addEventListener('click', () => {
 }
 
 
-// Assuming you have a function to update the visible names of the players
 function updatePlayerNames() {
-  // Get the updated visible names of the players
   const player1Name = document.querySelector('.player-1').textContent.trim();
   const player2Name = document.querySelector('.player-2').textContent.trim();
 
-  // Update the dropdown options with the first letters of the updated player names
   document.querySelector('option[value="player-1"]').textContent = player1Name.charAt(0);
   document.querySelector('option[value="player-2"]').textContent = player2Name.charAt(0);
 }
 
-// Call the updatePlayerNames function whenever the visible names of the players are changed
-// For example, after allowing the players to change their visible names
 updatePlayerNames();
 
 colorSelect.addEventListener('change', () => {
@@ -209,7 +204,6 @@ colorSelect.addEventListener('change', () => {
 });
 
 
-
 function updateColorSelectBox(color) {
   const colorSelect = document.getElementById('colorSelect');
   colorSelect.style.borderColor = color;
@@ -221,7 +215,6 @@ function resetColorSelectBox() {
   colorSelect.style.borderColor = '';
   colorSelect.style.boxShadow = '';
 }
-
 
 const player1Item = document.querySelector('.leaderboard-item .player-1');
 const player2Item = document.querySelector('.leaderboard-item .player-2');
@@ -244,6 +237,15 @@ player2Item.addEventListener('click', function() {
   playerInfo.appendChild(closeButton); 
 });
 
+fetch('players.json')
+.then(response => response.json())
+.then(data => {
+  // Use the fetched JSON data in your code
+  console.log(data); // Output: Array of player objects
+})
+.catch(error => {
+  console.error('Error fetching player data:', error);
+});
 
 
 
