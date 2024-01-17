@@ -262,6 +262,7 @@ input[type="range"][disabled]::-moz-range-thumb {
 
 .leaderboard-item .score-1, .score-2{
   color: grey;
+  padding-right: 5px;
 }
 
 .player-info {
@@ -272,10 +273,24 @@ input[type="range"][disabled]::-moz-range-thumb {
   height: 150px;
   display: none;
   padding: 10px;
+  color: gray;
+  animation: 1s fadeIn;
+  animation-fill-mode: forwards;
   background-color: transparent;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   border: 1px solid black;
+}
+
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
 }
 
 buttonDelete {
@@ -289,7 +304,6 @@ buttonDelete {
   padding: 3px 5px;
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.5s ease;
   color: grey; 
   margin-left: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);

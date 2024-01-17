@@ -14,9 +14,10 @@ const slider = document.querySelector('input[type="range"]');
 const sliderValue = document.querySelector('#sliderValue');
 const movieList = document.querySelector('#movieList');
 let totalSectors = sectors.length + 1;
-let spinningTime = 10000;
+let spinningTime = 1000;
 slider.value = 10;
 let elapsedTime = 0;
+const winningPlayerNumber = 0;
 
 slider.addEventListener('input', () => {
   sliderValue.textContent = slider.value;
@@ -72,6 +73,7 @@ function animate() {
     const currentSectorIndex = getIndex();
     const currentMovie = movieData[currentSectorIndex];
     movieData.splice(currentSectorIndex, 1);
+
     if (totalSectors === 2) {
       const eliminatedListItem = document.getElementById(currentMovie.listItem);
       eliminatedListItem.classList.add('loser');
@@ -79,6 +81,18 @@ function animate() {
       winnerListItem.classList.add('winner');
       spinEl.textContent = 'ВИН';
       spinEl.style.background = '#333333';
+      const playerColor = winnerListItem.style.color;
+      let winningPlayerNumber;
+  
+      if (playerColor === 'cornflowerblue') {
+        winningPlayerNumber = 1;
+      } else if (playerColor === 'teal') {
+        winningPlayerNumber = 2;
+      }
+  
+      if (winningPlayerNumber) {
+        winnerPoints(winningPlayerNumber); // Call the function to update points and coins for the winning player
+      }
     } else {
       const eliminatedListItem = document.getElementById(currentMovie.listItem);
       eliminatedListItem.classList.add('loser');
@@ -109,8 +123,8 @@ function initialize() {
   totalSectors = sectors.length;
   arc = TAU / totalSectors;
   sectors.forEach(drawSector);
-  rotateWheel(); // Initial rotation
-  startAnimation(); // Start engine
+  rotateWheel(); 
+  startAnimation(); 
   let movieListItemId; 
   
 addMovieBtn.addEventListener('click', () => {
@@ -156,7 +170,7 @@ addMovieBtn.addEventListener('click', () => {
     li.style.color = playerColor;
     movieList.appendChild(li);
     newMovieInput.value = '';
-    console.log(movieData)
+   // console.log(movieData[getIndex()].player);
     if (movieList.children.length === 11) {
       newMovieInput.disabled = true; 
       addMovieBtn.disabled = true; 
@@ -174,19 +188,19 @@ addMovieBtn.addEventListener('click', () => {
     newMovieInput.disabled = true;
     slider.disabled = true;
     colorSelect.disabled = true;
+    resetColorSelectBox();
   });
 }
 
 
 function updatePlayerNames() {
-  const player1Name = document.querySelector('.player-1').textContent.trim();
-  const player2Name = document.querySelector('.player-2').textContent.trim();
+  const player1Name = document.querySelector('.leaderboard-item .player-1').textContent.trim();
+  const player2Name = document.querySelector('.leaderboard-item .player-2').textContent.trim();
 
   document.querySelector('option[value="player-1"]').textContent = player1Name.charAt(0);
   document.querySelector('option[value="player-2"]').textContent = player2Name.charAt(0);
 }
 
-updatePlayerNames();
 
 colorSelect.addEventListener('change', () => {
   const selectedColor = colorSelect.value;
@@ -216,36 +230,84 @@ function resetColorSelectBox() {
   colorSelect.style.boxShadow = '';
 }
 
-const player1Item = document.querySelector('.leaderboard-item .player-1');
-const player2Item = document.querySelector('.leaderboard-item .player-2');
-const playerInfo = document.querySelector('.player-info');
-const closeButton = document.createElement('buttonDelete'); 
-closeButton.textContent = 'X'; 
-closeButton.addEventListener('click', function() {
-  playerInfo.style.display = 'none'; 
-});
+function getEmoji(index) {
+  switch (index) {
+    case 0:
+      return '🥇'; 
+    case 1:
+      return '🥈'; 
+    case 2:
+      return '🥉'; 
+    default:
+      return '🎖️'; 
+  }
+}
 
-player1Item.addEventListener('click', function() {
-  playerInfo.textContent = 'Player 1: Артемий';
-  playerInfo.style.display = 'block'; 
-  playerInfo.appendChild(closeButton); 
-});
+function winnerPoints(winningPlayerNumber) {
+  fetch('src/assets/players.json')
+    .then(response => response.json())
+    .then(data => {
+      const winningPlayer = data.find(player => player.number === winningPlayerNumber);
+      winningPlayer.score += 1;
+      winningPlayer.coins += 1;
 
-player2Item.addEventListener('click', function() {
-  playerInfo.textContent = 'Player 2: Слава';
-  playerInfo.style.display = 'block'; 
-  playerInfo.appendChild(closeButton); 
-});
+      // Update the JSON file with the new points for the winning player
+      fetch('src/assets/players.json', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(updatedData => {
+        console.log('Player points updated:', updatedData);
+      })
+      .catch(error => {
+        console.error('Error updating player points:', error);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching player data:', error);
+    });
+}
 
-fetch('assets/players.json')
+
+
+
+fetch('src/assets/players.json')
 .then(response => response.json())
 .then(data => {
-  // Use the fetched JSON data in your code
-  console.log(data); // Output: Array of player objects
-})
-.catch(error => {
-  console.error('Error fetching player data:', error);
+  data.sort((a, b) => b.score - a.score);
+  const playerInfo = document.querySelector('.player-info');
+  const closeButton = document.createElement('buttonDelete'); 
+  const leaderboard = document.querySelector('.leaderboard');
+  leaderboard.innerHTML = '';
+
+  data.forEach((player, index) => {
+    const leaderboardItem = document.createElement('div');
+    leaderboardItem.classList.add('leaderboard-item');
+    leaderboardItem.innerHTML = `<span class="score-${index + 1}">[${player.score}] </span><span class="player-${player.number}">${player.name}</span><span class="leaderboard-emoji">${getEmoji(index)}</span>`;
+    if (index === 0) {
+      leaderboardItem.querySelector('.leaderboard-emoji').classList.add('first-place');
+    };  
+      leaderboardItem.addEventListener('click', function() {
+        playerInfo.innerHTML = `${player.name}<br><br>Монеты: ${player.coins} 🪙 <br> Очки: ${player.score} 🎬`;
+        playerInfo.style.display = 'block';
+        closeButton.textContent = 'X'; 
+        closeButton.addEventListener('click', function() {
+        playerInfo.style.display = 'none'; 
 });
+        if (!playerInfo.contains(closeButton)) {
+          playerInfo.appendChild(closeButton);
+        }
+      });
+  
+      leaderboard.appendChild(leaderboardItem);
+      
+  });
+  updatePlayerNames();
+})
 
 
 

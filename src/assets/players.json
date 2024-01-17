@@ -1,4 +1,4 @@
 [
-    { "name": "Артемий", "score": 100, "coins": 50 },
-    { "name": "Слава", "score": 150, "coins": 75 }
-  ]
+    { "number": 1, "name": "Артемий", "score": 0, "coins": 0 },
+    { "number": 2, "name": "Слава", "score": 0, "coins": 0 }
+]
