@@ -244,23 +244,26 @@ function getEmoji(index) {
 }
 
 function winnerPoints(winningPlayerNumber) {
-  fetch('src/assets/players.json')
-    .then(response => response.json())
-    .then(data => {
-      const winningPlayer = data.find(player => player.number === winningPlayerNumber);
-      winningPlayer.score += 1;
-      winningPlayer.coins += 1;
+  fetch('https://example.com/updatePlayerScore', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ playerNumber: winningPlayerNumber }),
+  })
+  .then(response => {
+    if (response.ok) {
+      // Handle the successful response
+      console.log('Player score updated successfully');
+    } else {
+      // Handle the error response
+      console.error('Failed to update player score');
+    }
+  })
 
-      // Update the JSON file with the new points for the winning player
-      fetch('src/assets/players.json', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-    })
-}
+};
+
+
 
 
 
