@@ -268,37 +268,42 @@ function winnerPoints(winningPlayerNumber) {
 
 
 
-fetch('src/assets/players.json')
+// БАЗА ДАННЫХ
+fetch('https://gitlab.com/moonerism1/kinowheel/-/raw/main/players.json', {
+  headers: {
+    'Authorization': 'glpat-vdcgRzDH-DVBbS2GPzQy'
+  }
+})
 .then(response => response.json())
 .then(data => {
-  data.sort((a, b) => b.score - a.score);
+  data.players.sort((a, b) => b.score - a.score);
   const playerInfo = document.querySelector('.player-info');
-  const closeButton = document.createElement('buttonDelete'); 
+  const closeButton = document.createElement('button');
   const leaderboard = document.querySelector('.leaderboard');
   leaderboard.innerHTML = '';
 
-  data.forEach((player, index) => {
+  data.players.forEach((player, index) => {
     const leaderboardItem = document.createElement('div');
     leaderboardItem.classList.add('leaderboard-item');
     leaderboardItem.innerHTML = `<span class="score-${index + 1}">[${player.score}] </span><span class="player-${player.number}">${player.name}</span><span class="leaderboard-emoji">${getEmoji(index)}</span>`;
     if (index === 0) {
       leaderboardItem.querySelector('.leaderboard-emoji').classList.add('first-place');
-    };  
-      leaderboardItem.addEventListener('click', function() {
-        playerInfo.innerHTML = `${player.name}<br><br>Монеты: ${player.coins} 💰 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Очки: ${player.score} 🎬`;
-        playerInfo.style.display = 'block';
-        closeButton.textContent = 'X'; 
-        closeButton.addEventListener('click', function() {
-        playerInfo.style.display = 'none'; 
-});
-        if (!playerInfo.contains(closeButton)) {
-          playerInfo.appendChild(closeButton);
-        }
+    }
+    leaderboardItem.addEventListener('click', function() {
+      playerInfo.innerHTML = `${player.name}<br><br>Монеты: ${player.coins} 💰 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Очки: ${player.score} 🎬`;
+      playerInfo.style.display = 'block';
+      closeButton.textContent = 'X';
+      closeButton.addEventListener('click', function() {
+        playerInfo.style.display = 'none';
       });
-  
-      leaderboard.appendChild(leaderboardItem);
-      
+      if (!playerInfo.contains(closeButton)) {
+        playerInfo.appendChild(closeButton);
+      }
+    });
+
+    leaderboard.appendChild(leaderboardItem);
   });
+
   updatePlayerNames();
 })
 
