@@ -259,17 +259,7 @@ function winnerPoints(winningPlayerNumber) {
         },
         body: JSON.stringify(data),
       })
-      .then(response => response.json())
-      .then(updatedData => {
-        console.log('Player points updated:', updatedData);
-      })
-      .catch(error => {
-        console.error('Error updating player points:', error);
-      });
     })
-    .catch(error => {
-      console.error('Error fetching player data:', error);
-    });
 }
 
 
@@ -292,7 +282,7 @@ fetch('src/assets/players.json')
       leaderboardItem.querySelector('.leaderboard-emoji').classList.add('first-place');
     };  
       leaderboardItem.addEventListener('click', function() {
-        playerInfo.innerHTML = `${player.name}<br><br>Монеты: ${player.coins} 🪙 <br> Очки: ${player.score} 🎬`;
+        playerInfo.innerHTML = `${player.name}<br><br>Монеты: ${player.coins} 💰 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Очки: ${player.score} 🎬`;
         playerInfo.style.display = 'block';
         closeButton.textContent = 'X'; 
         closeButton.addEventListener('click', function() {
@@ -308,6 +298,35 @@ fetch('src/assets/players.json')
   });
   updatePlayerNames();
 })
+
+
+const shopButton = document.getElementById('btnShop');
+const popup = document.createElement('div');
+popup.className = 'popup';
+popup.textContent = 'Здесь будет магазин.'; 
+
+const closeButtonShop = document.createElement('buttonDeleteShop');
+closeButtonShop.textContent = 'X';
+
+closeButtonShop.addEventListener('click', function() {
+  popup.classList.remove('fade-in'); 
+  setTimeout(() => {
+    document.body.removeChild(popup); 
+  }, 500); 
+});
+
+popup.appendChild(closeButtonShop); 
+
+shopButton.addEventListener('click', function() {
+  document.body.appendChild(popup);
+  setTimeout(() => {
+    popup.classList.add('fade-in'); 
+  }, 10); 
+});
+
+
+
+
 
 
 
