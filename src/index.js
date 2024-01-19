@@ -14,7 +14,7 @@ const slider = document.querySelector('input[type="range"]');
 const sliderValue = document.querySelector('#sliderValue');
 const movieList = document.querySelector('#movieList');
 let totalSectors = sectors.length + 1;
-let spinningTime = 1000;
+let spinningTime = 10000;
 slider.value = 10;
 let elapsedTime = 0;
 const winningPlayerNumber = 0;
