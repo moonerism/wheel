@@ -1,3 +1,7 @@
+import { createShopWindow } from './shop.js';
+createShopWindow();
+
+
 let sectors = [{ id: 'sector-1', color: '#333333', label: '' }];
 let movieData = [];
 const colors = ['#191528', '#3C162F', '#5C162E', '#7C162E', '#110E1B'];
@@ -309,7 +313,7 @@ function updateLeaderboard() {
 
 }
 
-
+/*
 const shopButton = document.getElementById('btnShop');
 const popup = document.createElement('div');
 popup.className = 'popup';
@@ -335,7 +339,7 @@ shopButton.addEventListener('click', function() {
 });
 
 
-
+*/
 
 
 

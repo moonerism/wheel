@@ -29,7 +29,6 @@
       </div>
 
       <div class="box right">
-
         <div class="leaderboard">
           <div class="leaderboard-item">
             <span class="score-1"></span><span class="player-1"></span><span class="leaderboard-emoji"></span>
@@ -47,12 +46,11 @@
         </div>
       </div>
       
+    <script type="module" src="src/index.js"></script>
 
-    <script defer src="src/index.js"></script>
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-
       const firebaseConfig = {
         apiKey: "AIzaSyAZoXpiLMpZ5rYfIPvXlAFipT7wvBxzGow",
         authDomain: "kinowheel-729ea.firebaseapp.com",
@@ -62,7 +60,6 @@
         appId: "1:801228503558:web:42a5e83f3f432bd008e187",
         measurementId: "G-EP0KHTHYH0"
       };
-    
       const app = initializeApp(firebaseConfig);
       const analytics = getAnalytics(app);
     </script>
