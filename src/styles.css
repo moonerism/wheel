@@ -38,7 +38,6 @@ body {
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   border: 1px solid black;
-  color: white;
   z-index: 2;
 }
 
@@ -113,7 +112,7 @@ body {
   height: 30%;
   margin: -15%;
   background: #222;
-  color: #fff;
+  color: #FFC9B5;
   box-shadow: 0 0 0 8px #222, 0 0px 15px 5px rgba(0, 0, 0, 0.6);
   border-radius: 50%;
   transition: 0.8s;
@@ -142,7 +141,7 @@ button#btnAddMovie {
 
 button#btnAddMovie:hover:not([disabled]) {
   background-color: #000;
-  color: #fff;
+  color: #FFC9B5;
 }
 
 button#btnAddMovie:disabled {
@@ -168,7 +167,7 @@ input#newMovie {
   border: 1px solid #000;
   border-radius: 5px;
   padding: 10px;
-  color: #fff;
+  color: grey;
   background-color: #222;
   transition: all 0.5s ease;
   height: 40px;
@@ -178,8 +177,9 @@ input#newMovie {
 
 input#newMovie:focus {
   outline: none;
-  border-color: #f82;
-  box-shadow: 0 0 5px #f82;
+  border-color: #E3B505;
+  box-shadow: 0 0 5px #E3B505;
+  color: #FFC9B5;
 }
 
 input#newMovie:disabled {
@@ -204,7 +204,7 @@ button#btnShop {
 
 button#btnShop:hover {
   background-color: #000;
-  color: #fff;
+  color: #FFC9B5;
 }
 
 input[type="range"] {
@@ -337,7 +337,7 @@ buttonDelete, buttonDeleteShop {
 }
 
 .first-place {
-  text-shadow: 0 2px 7px #ffd700;
+  text-shadow: 0 2px 7px #E3B505;
   background-image: url('assets/leader_bg.gif');
   background-size: contain;
 }
@@ -348,7 +348,7 @@ buttonDelete, buttonDeleteShop {
 }
 
 .winner {
-  text-shadow: 0 2px 7px #ffd700; 
+  text-shadow: 0 2px 7px #E3B505; 
   background-image: url('assets/win_anim.gif');
   background-repeat: repeat;
   background-size: contain;

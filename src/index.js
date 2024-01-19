@@ -47,7 +47,7 @@ function drawSector(sector, index) {
   canvasContext.translate(radius, radius);
   canvasContext.rotate(sectorAngle + arc / 2);
   canvasContext.textAlign = 'right';
-  canvasContext.fillStyle = '#fff';
+  canvasContext.fillStyle = '#FFC9B5';
   canvasContext.font = 'bold 20px sans-serif';
   canvasContext.strokeStyle = 'black'; 
   canvasContext.lineWidth = 1; 
@@ -125,6 +125,7 @@ function initialize() {
   sectors.forEach(drawSector);
   rotateWheel(); 
   startAnimation(); 
+  updateLeaderboard()
   let movieListItemId; 
   
 addMovieBtn.addEventListener('click', () => {
@@ -170,7 +171,6 @@ addMovieBtn.addEventListener('click', () => {
     li.style.color = playerColor;
     movieList.appendChild(li);
     newMovieInput.value = '';
-   // console.log(movieData[getIndex()].player);
     if (movieList.children.length === 11) {
       newMovieInput.disabled = true; 
       addMovieBtn.disabled = true; 
@@ -244,68 +244,70 @@ function getEmoji(index) {
 }
 
 function winnerPoints(winningPlayerNumber) {
-  fetch('https://example.com/updatePlayerScore', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ playerNumber: winningPlayerNumber }),
-  })
-  .then(response => {
-    if (response.ok) {
-      // Handle the successful response
-      console.log('Player score updated successfully');
-    } else {
-      // Handle the error response
-      console.error('Failed to update player score');
+  fetch('https://kinowheel-729ea-default-rtdb.europe-west1.firebasedatabase.app/players.json')
+    .then(response => response.json())
+    .then(data => {
+      const playersData = Object.values(data);
+
+      const winningPlayer = playersData.find(player => player.number === winningPlayerNumber);
+
+      if (winningPlayer) {
+        winningPlayer.points += 1;
+        winningPlayer.coins += 1;
+
+        fetch('https://kinowheel-729ea-default-rtdb.europe-west1.firebasedatabase.app/players.json', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(playersData),
+        })
+        .then(() => {
+          updateLeaderboard(data);
+      })
     }
-  })
-
-};
-
-
-
-
-
-
-// БАЗА ДАННЫХ
-fetch('https://gitlab.com/moonerism1/kinowheel/-/raw/main/players.json', {
-  headers: {
-    'Authorization': 'glpat-vdcgRzDH-DVBbS2GPzQy'
-  }
-})
-.then(response => response.json())
-.then(data => {
-  data.players.sort((a, b) => b.score - a.score);
-  const playerInfo = document.querySelector('.player-info');
-  const closeButton = document.createElement('button');
-  const leaderboard = document.querySelector('.leaderboard');
-  leaderboard.innerHTML = '';
-
-  data.players.forEach((player, index) => {
-    const leaderboardItem = document.createElement('div');
-    leaderboardItem.classList.add('leaderboard-item');
-    leaderboardItem.innerHTML = `<span class="score-${index + 1}">[${player.score}] </span><span class="player-${player.number}">${player.name}</span><span class="leaderboard-emoji">${getEmoji(index)}</span>`;
-    if (index === 0) {
-      leaderboardItem.querySelector('.leaderboard-emoji').classList.add('first-place');
-    }
-    leaderboardItem.addEventListener('click', function() {
-      playerInfo.innerHTML = `${player.name}<br><br>Монеты: ${player.coins} 💰 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Очки: ${player.score} 🎬`;
-      playerInfo.style.display = 'block';
-      closeButton.textContent = 'X';
-      closeButton.addEventListener('click', function() {
-        playerInfo.style.display = 'none';
-      });
-      if (!playerInfo.contains(closeButton)) {
-        playerInfo.appendChild(closeButton);
-      }
-    });
-
-    leaderboard.appendChild(leaderboardItem);
   });
+}
 
-  updatePlayerNames();
-})
+
+function updateLeaderboard() {
+  fetch('https://kinowheel-729ea-default-rtdb.europe-west1.firebasedatabase.app/players.json')
+    .then(response => response.json())
+    .then(data => {
+      const playersData = Object.values(data);
+      playersData.sort((a, b) => b.points - a.points);
+
+      const playerInfo = document.querySelector('.player-info');
+      const closeButton = document.createElement('buttonDeleteShop');
+      const leaderboard = document.querySelector('.leaderboard');
+      leaderboard.innerHTML = '';
+
+      playersData.forEach((player, index) => {
+        const leaderboardItem = document.createElement('div');
+        leaderboardItem.classList.add('leaderboard-item');
+        leaderboardItem.innerHTML = `<span class="score-${index + 1}">[${player.points}] </span><span class="player-${player.number}">${player.name}</span><span class="leaderboard-emoji">${getEmoji(index)}</span>`;
+        if (index === 0) {
+          leaderboardItem.querySelector('.leaderboard-emoji').classList.add('first-place');
+        }
+        leaderboardItem.addEventListener('click', function() {
+          playerInfo.innerHTML = `${player.name}<br><br>Монеты: ${player.coins} 💰 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Очки: ${player.points} 🎬`;
+          playerInfo.style.display = 'block';
+          closeButton.textContent = 'X';
+          closeButton.addEventListener('click', function() {
+            playerInfo.style.display = 'none';
+          });
+          if (!playerInfo.contains(closeButton)) {
+            playerInfo.appendChild(closeButton);
+          }
+        });
+
+        leaderboard.appendChild(leaderboardItem);
+      });
+
+      updatePlayerNames();
+    })
+
+}
 
 
 const shopButton = document.getElementById('btnShop');
