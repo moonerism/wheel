@@ -1,7 +1,6 @@
 import { createShopWindow } from './shop.js';
 createShopWindow();
 
-
 let sectors = [{ id: 'sector-1', color: '#333333', label: '' }];
 let movieData = [];
 const colors = ['#191528', '#3C162F', '#5C162E', '#7C162E', '#110E1B'];
@@ -282,7 +281,7 @@ function updateLeaderboard() {
       playersData.sort((a, b) => b.points - a.points);
 
       const playerInfo = document.querySelector('.player-info');
-      const closeButton = document.createElement('buttonDeleteShop');
+      const closeButton = document.createElement('buttonDelete');
       const leaderboard = document.querySelector('.leaderboard');
       leaderboard.innerHTML = '';
 
@@ -312,38 +311,6 @@ function updateLeaderboard() {
     })
 
 }
-
-/*
-const shopButton = document.getElementById('btnShop');
-const popup = document.createElement('div');
-popup.className = 'popup';
-popup.textContent = 'Здесь будет магазин.'; 
-
-const closeButtonShop = document.createElement('buttonDeleteShop');
-closeButtonShop.textContent = 'X';
-
-closeButtonShop.addEventListener('click', function() {
-  popup.classList.remove('fade-in'); 
-  setTimeout(() => {
-    document.body.removeChild(popup); 
-  }, 500); 
-});
-
-popup.appendChild(closeButtonShop); 
-
-shopButton.addEventListener('click', function() {
-  document.body.appendChild(popup);
-  setTimeout(() => {
-    popup.classList.add('fade-in'); 
-  }, 10); 
-});
-
-
-*/
-
-
-
-
 
 
 initialize();
