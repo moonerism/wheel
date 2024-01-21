@@ -1,4 +1,3 @@
-// Создаем окно магазина
 export function createShopWindow() {
     const shopButton = document.getElementById('btnShop');
     const popup = document.createElement('div');
@@ -7,6 +6,13 @@ export function createShopWindow() {
     
     const closeButtonShop = document.createElement('buttonDeleteShop');
     closeButtonShop.textContent = 'X';
+
+    shopButton.addEventListener('click', function() {
+      document.body.appendChild(popup);
+      setTimeout(() => {
+        popup.classList.add('fade-in'); 
+      }, 10); 
+    });
     
     closeButtonShop.addEventListener('click', function() {
       popup.classList.remove('fade-in'); 
@@ -17,14 +23,6 @@ export function createShopWindow() {
     
     popup.appendChild(closeButtonShop); 
     
-    shopButton.addEventListener('click', function() {
-      document.body.appendChild(popup);
-      setTimeout(() => {
-        popup.classList.add('fade-in'); 
-      }, 10); 
-    });
-
-
     const shopContainer = document.createElement('div');
     shopContainer.className = 'shop-container';
     const artifactsGrid = document.createElement('div');
@@ -69,14 +67,15 @@ export function createShopWindow() {
 
   }
   
-  // Тестовые артифакты 
-
-  const artifacts = [
-    { name: 'Сейф', cost: 100, description: 'Каждое {highlighted-word} начисляет 1 💰',  highlightedWord: 'воскресенье' },
-    { name: 'Корона', cost: 150, description: 'Предоставляет величественную корону рядом с именем игрока после победы в игре.' },
-    { name: 'Аура', cost: 180, description: 'Добавляет светящуюся ауру вокруг имени игрока в таблице лидеров после победы в игре.' },
-    { name: 'Трофей', cost: 220, description: 'Разблокирует золотой трофей рядом с именем игрока после победы в игре.' },
-    { name: 'Эмблема', cost: 160, description: 'Предоставляет специальную эмблему рядом с именем игрока в таблице лидеров после победы в игре.' },
-    { name: 'Фанфар', cost: 120, description: 'Запускает триумфальный звук фанфар после победы в игре.' },
+ const artifacts = [
+    { name: 'Сейф', cost: 100, description: 'Каждое {highlighted-word} добавляет 1💰',  highlightedWord: 'воскресенье' },
+    { name: 'Иконка', cost: 150, description: 'Добавляет иконку к нику' },
+    { name: 'Аура', cost: 180, description: 'Описание' },
+    { name: 'Трофей', cost: 220, description: 'Описание' },
+    { name: 'Эмблема', cost: 160, description: 'Описание' },
+    { name: 'Фанфар', cost: 120, description: 'Описание' },
+    { name: 'Тест1', cost: 100, description: 'Описание' },
+    { name: 'Тест2', cost: 150, description: 'Описание' },
+    { name: 'Тест3', cost: 180, description: 'Описание' }
 ];
   

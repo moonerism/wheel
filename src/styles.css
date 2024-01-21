@@ -10,7 +10,7 @@ ul {
 }
 
 li {
-  margin-bottom: 10px; /* Add margin to increase spacing between items */
+  margin-bottom: 10px;
   user-select: none;
 }
 
@@ -25,7 +25,6 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
   place-items: center;
   background-image: url('https://www.transparenttextures.com/patterns/classy-fabric.png'); 
-  background-repeat: repeat; 
 }
 
 .box {
@@ -34,7 +33,8 @@ body {
   height: 400px;
   margin: 50px 50px;
   padding: 15px;
-  background-color: transparent;
+  background-color: #222;
+  background-image: url("https://www.transparenttextures.com/patterns/absurdity.png");
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   border: 1px solid black;
@@ -45,6 +45,28 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+#history {
+  position: fixed;
+  top: 50%;
+  left: 660px;
+  width: 500px;
+  height: 400px;
+  transform: translate(-50%, -50%); 
+  padding: 15px;
+  background-color: #222;
+  background-image: url("https://www.transparenttextures.com/patterns/absurdity.png");
+  border-radius: 5px;
+  border: 1px solid black;
+  z-index: -1;
+  visibility: hidden;
+  color: grey;
+  user-select: none;
+}
+
+#history div {
+  margin-bottom: 10px; 
 }
 
 .box.left h2 {
@@ -189,7 +211,7 @@ input#newMovie:disabled {
 button#btnShop {
   position: absolute;
   bottom: 15px;
-  right: 200px;
+  right: 190px;
   padding: 10px;
   background-color: #222;
   border: 1px solid #000;
@@ -203,6 +225,32 @@ button#btnShop {
 }
 
 button#btnShop:hover {
+  background-color: #000;
+  color: #FFC9B5;
+}
+
+button#btnLog {
+  position: absolute;
+  top: calc(50% - 190px);
+  left: calc(50% - 560px); 
+  background-color: transparent;
+  border: 1px solid #000;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  height: 40px;
+  width: 80px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  border-right: none;
+  color: gray;        
+}
+
+button#btnLog:hover {
+  left: calc(50% - 620px); /* Move the button 10px to the left on hover */   
+}
+
+button#btnLog:hover {
   background-color: #000;
   color: #FFC9B5;
 }
@@ -309,7 +357,6 @@ input[type="range"][disabled]::-moz-range-thumb {
   user-select: none;
 }
 
-
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -320,7 +367,7 @@ input[type="range"][disabled]::-moz-range-thumb {
   }
 }
 
-buttonDelete, buttonDeleteShop {
+buttonDeleteShop {
   position: absolute;
   background-color: #222;
   color: #000;
@@ -332,17 +379,10 @@ buttonDelete, buttonDeleteShop {
   color: grey; 
   margin-left: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-buttonDelete {
-  right: 5px;
-  top: 5px;
-}
-
-buttonDeleteShop {
   right: 10px;
   top: 10px;
 }
+
 .first-place {
   text-shadow: 0 2px 7px #E3B505;
   background-image: url('assets/leader_bg.gif');
@@ -364,14 +404,12 @@ buttonDeleteShop {
 }
 
 .popup {
-  background-image: url('https://www.transparenttextures.com/patterns/classy-fabric.png'); 
-  background-repeat: repeat; 
   background-color: #222;
+  background-image: url("https://www.transparenttextures.com/patterns/absurdity.png");
   position: fixed;
   top: 50%; 
   left: 50%; 
   transform: translate(-50%, -50%); 
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   border: 1px solid black;
   padding: 15px;
   border-radius: 5px;
@@ -382,6 +420,7 @@ buttonDeleteShop {
   height: 400px; 
   color: #FFC9B5;
   user-select: none;
+  font-size: 20px;
 }
 
 .popup.fade-in {
@@ -400,12 +439,15 @@ buttonDeleteShop {
 
 .artifacts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust the column width as needed */
+  grid-template-columns: auto auto auto auto auto auto auto auto auto;
+  justify-content: left; 
+  gap: 5px;
+  padding-left: 17px;
 }
 
 .artifact-icon {
-  font-size: 24px; /* Adjust as needed */
-  margin-bottom: 10px; /* Adjust as needed */
+  font-size: 24px; 
+  margin-bottom: 10px; 
 }
 
 .artifact-card {
@@ -439,14 +481,12 @@ buttonDeleteShop {
   left: 50%; 
   transform: translateX(-50%); 
   z-index: 1;
+  opacity: 0;
+  transition: opacity 0.4s;
 }
 
 .artifact-card:hover .tooltip {
   pointer-events: auto;
   visibility: visible;
+  opacity: 1; 
 }
-
-
-
-
-

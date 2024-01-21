@@ -17,17 +17,17 @@ const slider = document.querySelector('input[type="range"]');
 const sliderValue = document.querySelector('#sliderValue');
 const movieList = document.querySelector('#movieList');
 let totalSectors = sectors.length + 1;
-let spinningTime = 10000;
+let spinningTime = 1000;
 slider.value = 10;
 let elapsedTime = 0;
-const winningPlayerNumber = 0;
+let winningPlayerNumber = 0;
 
 slider.addEventListener('input', () => {
   sliderValue.textContent = slider.value;
   spinningTime = slider.value * 1000;
 });
 
-const friction = 0.995; // 0.995=soft, 0.99=mid, 0.98hard
+const friction = 0.995; 
 let angularVelocity = 0; 
 let angle = 0;
 let arc = TAU / totalSectors;
@@ -84,17 +84,15 @@ function animate() {
       winnerListItem.classList.add('winner');
       spinEl.textContent = 'ВИН';
       spinEl.style.background = '#333333';
+      addWinnerMovie(winnerListItem.textContent);
       const playerColor = winnerListItem.style.color;
-      let winningPlayerNumber;
-  
       if (playerColor === 'cornflowerblue') {
         winningPlayerNumber = 1;
       } else if (playerColor === 'teal') {
         winningPlayerNumber = 2;
-      }
-  
+      } 
       if (winningPlayerNumber) {
-        winnerPoints(winningPlayerNumber); // Call the function to update points and coins for the winning player
+        winnerPoints(winningPlayerNumber); 
       }
     } else {
       const eliminatedListItem = document.getElementById(currentMovie.listItem);
@@ -128,7 +126,8 @@ function initialize() {
   sectors.forEach(drawSector);
   rotateWheel(); 
   startAnimation(); 
-  updateLeaderboard()
+  updateLeaderboard();
+  updateHistory();
   let movieListItemId; 
   
 addMovieBtn.addEventListener('click', () => {
@@ -141,7 +140,7 @@ addMovieBtn.addEventListener('click', () => {
   } else if (selectedColor === 'player-2') {
     playerColor = 'teal';
   } else {
-    playerColor = 'white'; 
+    playerColor = '#FFC9B5'; 
   }
 
   if (movieName && movieList.children.length < 11) {
@@ -165,7 +164,7 @@ addMovieBtn.addEventListener('click', () => {
       sectors.forEach(drawSector);
       movieListItemId = `movie-${movieList.children.length + 1}`;
       const movieSectorWheelId = `sector-${totalSectors}`;
-      const movie = { name: movieName, listItem: movieListItemId, sectorWheel: movieSectorWheelId };
+      const movie = { name: movieName, listItem: movieListItemId, sectorWheel: movieSectorWheelId, player: selectedColor };
       movieData.push(movie);
     }
     const li = document.createElement('li');
@@ -219,6 +218,87 @@ colorSelect.addEventListener('change', () => {
     resetColorSelectBox();
   }
 });
+
+const btnLog = document.getElementById('btnLog');
+const listLog = document.getElementById('history');
+let isHistoryVisible = false;
+btnLog.addEventListener('click', function() {
+  if (isHistoryVisible) {
+    listLog.style.visibility = 'hidden';
+    listLog.style.zIndex = '-1';
+    isHistoryVisible = false;
+  } else {
+    listLog.style.visibility = 'visible';
+    listLog.style.zIndex = '3';
+    isHistoryVisible = true;
+  }
+});
+
+const historyLimit = 10; 
+const winnerMovies = []; 
+
+function updateHistory() {
+  const historyElement = document.getElementById('history');
+  historyElement.innerHTML = ''; 
+
+  fetch('https://kinowheel-729ea-default-rtdb.europe-west1.firebasedatabase.app/movies.json')
+    .then(response => response.json())
+    .then(data => {
+      const winnerMovies = data; 
+
+      for (let i = winnerMovies.length - 1; i >= 0; i--) {
+        const movieName = winnerMovies[i].movieName;
+        const timestamp = new Date(winnerMovies[i].timestamp); 
+        const formattedTimestamp = `${String(timestamp.getDate()).padStart(2, '0')}.${String(timestamp.getMonth() + 1).padStart(2, '0')}.${timestamp.getFullYear()}`; 
+        const opacity = 1 - (0.1 * (winnerMovies.length - 1 - i));
+
+        const movieItem = document.createElement('div');
+        movieItem.textContent = `${movieName} - [${formattedTimestamp}]`;
+        movieItem.style.opacity = opacity;
+        const winnerNumber = winnerMovies[i].winnerNumber;
+        if (winnerNumber === 1) {
+          movieItem.style.color = 'cornflowerblue';
+        } else if (winnerNumber === 2) {
+          movieItem.style.color = 'teal'; 
+        } else {
+          movieItem.style.color = 'grey'; 
+        }
+
+        historyElement.appendChild(movieItem);
+      }
+    });
+}
+
+function addWinnerMovie(movieName) {
+  const timestampD = new Date().toISOString();
+
+  fetch('https://kinowheel-729ea-default-rtdb.europe-west1.firebasedatabase.app/movies.json')
+    .then(response => response.json())
+    .then(data => {
+      let winnerMovies = data || [];
+
+      winnerMovies.push({
+        movieName: movieName,
+        winnerNumber: winningPlayerNumber, 
+        timestamp: timestampD
+      });
+
+      if (winnerMovies.length > historyLimit) {
+        winnerMovies.shift();
+      }
+
+      return fetch('https://kinowheel-729ea-default-rtdb.europe-west1.firebasedatabase.app/movies.json', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(winnerMovies),
+      });
+    })
+    .then(() => {
+      updateHistory();
+    });
+}
 
 
 function updateColorSelectBox(color) {
@@ -281,7 +361,7 @@ function updateLeaderboard() {
       playersData.sort((a, b) => b.points - a.points);
 
       const playerInfo = document.querySelector('.player-info');
-      const closeButton = document.createElement('buttonDelete');
+      let lastClickedPlayer = null; 
       const leaderboard = document.querySelector('.leaderboard');
       leaderboard.innerHTML = '';
 
@@ -293,14 +373,19 @@ function updateLeaderboard() {
           leaderboardItem.querySelector('.leaderboard-emoji').classList.add('first-place');
         }
         leaderboardItem.addEventListener('click', function() {
-          playerInfo.innerHTML = `${player.name}<br><br>Монеты: ${player.coins} 💰 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Очки: ${player.points} 🎬`;
-          playerInfo.style.display = 'block';
-          closeButton.textContent = 'X';
-          closeButton.addEventListener('click', function() {
-            playerInfo.style.display = 'none';
-          });
-          if (!playerInfo.contains(closeButton)) {
-            playerInfo.appendChild(closeButton);
+          if (lastClickedPlayer === player) {
+            playerInfo.style.display = 'none'; 
+            lastClickedPlayer = null; 
+          } else {
+            playerInfo.innerHTML = `
+            <div style="display: flex; justify-content: space-between;">
+              <div>${player.name}</div>
+              <div>${player.coins} 💰 ${player.points} 🎬</div>
+            </div>
+          `;
+          
+            playerInfo.style.display = 'block';
+            lastClickedPlayer = player; 
           }
         });
 
